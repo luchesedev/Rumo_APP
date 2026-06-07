@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- bg_dot_active.xml -->
+<!-- Ponto ativo (selecionado) do indicador de páginas do carrossel -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <solid android:color="#111111" />
+
+    <size
+        android:width="8dp"
+        android:height="8dp" />
+
+</shape>

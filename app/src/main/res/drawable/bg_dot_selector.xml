@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- bg_dot_selector.xml -->
+<!-- Seletor de estado para os pontos do indicador do carrossel.
+     Use este drawable nos pontos e altere o estado "selected" via código:
+         dotView.isSelected = true   → ponto ativo (preto, maior)
+         dotView.isSelected = false  → ponto inativo (cinza, menor) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Estado: selecionado (página atual) -->
+    <item android:state_selected="true">
+        <shape android:shape="oval">
+            <solid android:color="#111111" />
+            <size
+                android:width="8dp"
+                android:height="8dp" />
+        </shape>
+    </item>
+
+    <!-- Estado: padrão (inativo) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#CCCCCC" />
+            <size
+                android:width="6dp"
+                android:height="6dp" />
+        </shape>
+    </item>
+
+</selector>

@@ -21,7 +21,7 @@
             android:name=".Vagas"
             android:exported="false" />
         <activity
-            android:name=".Rumo"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".Cadastro"
@@ -36,7 +36,7 @@
             android:name=".EscolhaCurriculo"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Rumo"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
