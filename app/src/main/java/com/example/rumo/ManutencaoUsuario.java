@@ -1,157 +1,106 @@
 package com.example.rumo;
 
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButton;
+import com.example.rumo.dao.CurriculoDAO;
+import com.example.rumo.model.Curriculo;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class ManutencaoUsuario extends AppCompatActivity {
 
-    // Declaração dos componentes do ecrã
-    private TextInputEditText editNome, editContato, editFaculdade, editHabilidades, editExperiencia;
-    private Spinner spinnerTipoCurriculo, spinnerTema;
-    private Button btnSalvar; // Alterado para Button normal para alinhar com o XML atual
+    // Componentes da tela adaptados para o novo XML
+    private TextInputEditText editDadosPessoais, editObjetivo, editFormacao, editHabilidade, editExperiencia, editResumo;
+    private Button btnSalvar;
 
-    // Declaração do ajudante da base de dados e ID do utilizador
-    private DatabaseHelper db;
-    private int idUsuarioLogado;
+    // Conexão com o banco e o objeto que será salvo/editado
+    private CurriculoDAO dao;
+    private Curriculo curriculoAtual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manutencao_usuario);
 
-        // Inicializa a ligação à base de dados
-        db = new DatabaseHelper(this);
+        // Inicializa o DAO
+        dao = new CurriculoDAO(this);
 
-        // Recupera o ID do utilizador que iniciou a sessão
-        idUsuarioLogado = getIntent().getIntExtra("ID_USUARIO", -1);
-
-        // Vincula as variáveis Java aos IDs do XML
         inicializarComponentes();
 
-        // Configura as opções dos Spinners
-        configurarSpinners();
+        // Verifica se a tela foi aberta para edição passando um currículo existente
+        curriculoAtual = (Curriculo) getIntent().getSerializableExtra("curriculo_selecionado");
 
-        // Configura o clique do botão para guardar as alterações
-        btnSalvar.setOnClickListener(v -> salvarAlteracoes());
-    }
+        if (curriculoAtual != null) {
+            preencherDadosNaTela();
+        }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Verifica e preenche os dados automaticamente sempre que o ecrã fica ativo
-        verificarEPreencherDados();
+        btnSalvar.setOnClickListener(v -> salvarCurriculo());
     }
 
     private void inicializarComponentes() {
-        editNome = findViewById(R.id.editNome);
-        editContato = findViewById(R.id.editContato);
-        editFaculdade = findViewById(R.id.editFaculdade);
-        editHabilidades = findViewById(R.id.editHabilidades);
+        editDadosPessoais = findViewById(R.id.editDadosPessoais);
+        editObjetivo = findViewById(R.id.editObjetivo);
+        editFormacao = findViewById(R.id.editFormacao);
+        editHabilidade = findViewById(R.id.editHabilidade);
         editExperiencia = findViewById(R.id.editExperiencia);
-        spinnerTipoCurriculo = findViewById(R.id.spinnerTipoCurriculo);
-        spinnerTema = findViewById(R.id.spinnerTema);
+        editResumo = findViewById(R.id.editResumo);
         btnSalvar = findViewById(R.id.btnSalvar);
     }
 
-    private void configurarSpinners() {
-        // Opções para o Tipo de Currículo
-        String[] tiposCurriculo = {"Humanizado", "Template Tradicional", "Criativo", "Técnico"};
-        ArrayAdapter<String> adapterTipo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tiposCurriculo);
-        adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTipoCurriculo.setAdapter(adapterTipo);
-
-        // Opções para os Temas
-        String[] temas = {"Minimalista", "Moderno", "Corporativo", "Elegante"};
-        ArrayAdapter<String> adapterTema = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, temas);
-        adapterTema.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTema.setAdapter(adapterTema);
+    private void preencherDadosNaTela() {
+        // Mapeando diretamente os dados do modelo para os novos componentes correspondentes do XML
+        editDadosPessoais.setText(curriculoAtual.getDadosPessoais());
+        editObjetivo.setText(curriculoAtual.getObjetivo());
+        editFormacao.setText(curriculoAtual.getFormacao());
+        editHabilidade.setText(curriculoAtual.getHabilidade());
+        editExperiencia.setText(curriculoAtual.getExperiencia());
+        editResumo.setText(curriculoAtual.getResumo());
     }
 
-    private void verificarEPreencherDados() {
-        if (idUsuarioLogado == -1) {
-            Toast.makeText(this, "Erro de autenticação. Inicie sessão novamente.", Toast.LENGTH_SHORT).show();
-            finish();
+    private void salvarCurriculo() {
+        String dadosPessoais = editDadosPessoais.getText().toString().trim();
+
+        // Validação usando o novo campo obrigatório
+        if (dadosPessoais.isEmpty()) {
+            Toast.makeText(this, "O campo Dados Pessoais é obrigatório.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Cursor cursor = db.buscarDadosUsuario(idUsuarioLogado);
+        // Se for um currículo novo, instancia o objeto
+        boolean isNovo = false;
+        if (curriculoAtual == null) {
+            curriculoAtual = new Curriculo();
+            isNovo = true;
+        }
 
-        if (cursor != null && cursor.moveToFirst()) {
-            try {
-                editNome.setText(cursor.getString(cursor.getColumnIndexOrThrow("nome")));
-                editContato.setText(cursor.getString(cursor.getColumnIndexOrThrow("contato")));
-                editFaculdade.setText(cursor.getString(cursor.getColumnIndexOrThrow("faculdade")));
-                editHabilidades.setText(cursor.getString(cursor.getColumnIndexOrThrow("habilidades")));
-                editExperiencia.setText(cursor.getString(cursor.getColumnIndexOrThrow("experiencia")));
+        // Preenchendo o modelo com os dados capturados da tela
+        curriculoAtual.setDadosPessoais(dadosPessoais);
+        curriculoAtual.setObjetivo(editObjetivo.getText().toString().trim());
+        curriculoAtual.setFormacao(editFormacao.getText().toString().trim());
+        curriculoAtual.setHabilidade(editHabilidade.getText().toString().trim());
+        curriculoAtual.setExperiencia(editExperiencia.getText().toString().trim());
+        curriculoAtual.setResumo(editResumo.getText().toString().trim());
 
-                String tipoSalvo = cursor.getString(cursor.getColumnIndexOrThrow("tipo_curriculo"));
-                String temaSalvo = cursor.getString(cursor.getColumnIndexOrThrow("tema"));
-
-                setSpinnerSelection(spinnerTipoCurriculo, tipoSalvo);
-                setSpinnerSelection(spinnerTema, temaSalvo);
-
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } finally {
-                cursor.close();
+        // Executa a operação no Banco de Dados
+        try {
+            if (isNovo) {
+                long resultado = dao.Insert(curriculoAtual);
+                if (resultado != -1) {
+                    Toast.makeText(this, "Currículo cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(this, "Erro ao cadastrar currículo.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                dao.update(curriculoAtual);
+                Toast.makeText(this, "Currículo atualizado com sucesso!", Toast.LENGTH_SHORT).show();
+                finish();
             }
-        } else {
-            if (cursor != null) cursor.close();
-
-            Toast.makeText(this, "Por favor, preencha o seu perfil primeiro.", Toast.LENGTH_LONG).show();
-
-            Intent intent = new Intent(ManutencaoUsuario.this, DadosVagaCurriculo.class);
-            intent.putExtra("ID_USUARIO", idUsuarioLogado);
-            startActivity(intent);
-        }
-    }
-
-    private void salvarAlteracoes() {
-        String nome = editNome.getText().toString().trim();
-        String contato = editContato.getText().toString().trim();
-        String faculdade = editFaculdade.getText().toString().trim();
-        String habilidades = editHabilidades.getText().toString().trim();
-        String experiencia = editExperiencia.getText().toString().trim();
-
-        String tipoCurriculo = spinnerTipoCurriculo.getSelectedItem().toString();
-        String tema = spinnerTema.getSelectedItem().toString();
-
-        if (nome.isEmpty() || contato.isEmpty()) {
-            Toast.makeText(this, "Por favor, preencha pelo menos o Nome e o Contacto.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        boolean sucesso = db.atualizarDados(
-                idUsuarioLogado, nome, contato, faculdade,
-                habilidades, experiencia, tipoCurriculo, tema
-        );
-
-        if (sucesso) {
-            Toast.makeText(this, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show();
-            finish(); // Fecha a atividade e retorna ao ecrã anterior após guardar
-        } else {
-            Toast.makeText(this, "Erro ao atualizar o perfil. Tente novamente.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void setSpinnerSelection(Spinner spinner, String valor) {
-        if (valor == null) return;
-        ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinner.getAdapter();
-        for (int i = 0; i < adapter.getCount(); i++) {
-            if (adapter.getItem(i).equals(valor)) {
-                spinner.setSelection(i);
-                break;
-            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Erro ao salvar: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

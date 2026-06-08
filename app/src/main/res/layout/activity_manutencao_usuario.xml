@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gerenciar Perfil Rumo"
+                android:text="Gerenciar Currículo"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Atualize seus dados profissionais abaixo"
+                android:text="Preencha e atualize os dados profissionais abaixo"
                 android:textSize="13sp"
                 android:textColor="#D4E8D8"
                 android:layout_marginTop="4dp" />
@@ -65,7 +65,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NOME COMPLETO"
+                android:text="DADOS PESSOAIS"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:textColor="@color/verde"
@@ -76,7 +76,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Seu nome"
+                android:hint="Nome, telefone, endereço, etc."
                 app:hintTextColor="@color/cinzamedio"
                 app:boxStrokeColor="@color/verde"
                 app:boxStrokeWidth="1dp"
@@ -88,10 +88,12 @@
                 app:boxBackgroundColor="#FFFFFF">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editNome"
+                    android:id="@+id/editDadosPessoais"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName|textCapWords"
+                    android:minHeight="60dp"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
                     android:textColor="@color/textoescuro"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -99,42 +101,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CONTATO (E-MAIL OU LINKEDIN)"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:textColor="@color/verde"
-                android:letterSpacing="0.08"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="seu@email.com"
-                app:hintTextColor="@color/cinzamedio"
-                app:boxStrokeColor="@color/verde"
-                app:boxStrokeWidth="1dp"
-                app:boxStrokeWidthFocused="2dp"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxBackgroundColor="#FFFFFF">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editContato"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/textoescuro"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FACULDADE / ÁREA"
+                android:text="OBJETIVO"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:textColor="@color/verde"
@@ -146,7 +113,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ex: Engenharia de Software"
+                android:hint="Qual o seu objetivo profissional?"
                 app:hintTextColor="@color/cinzamedio"
                 app:boxStrokeColor="@color/verde"
                 app:boxStrokeWidth="1dp"
@@ -158,10 +125,12 @@
                 app:boxBackgroundColor="#FFFFFF">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editFaculdade"
+                    android:id="@+id/editObjetivo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
+                    android:minHeight="60dp"
+                    android:gravity="top|start"
                     android:textColor="@color/textoescuro"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -169,7 +138,44 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="HABILIDADES E SOFT SKILLS"
+                android:text="FORMAÇÃO"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="@color/verde"
+                android:letterSpacing="0.08"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Sua escolaridade ou cursos"
+                app:hintTextColor="@color/cinzamedio"
+                app:boxStrokeColor="@color/verde"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxBackgroundColor="#FFFFFF">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editFormacao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minHeight="60dp"
+                    android:gravity="top|start"
+                    android:textColor="@color/textoescuro"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HABILIDADES"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:textColor="@color/verde"
@@ -193,10 +199,10 @@
                 app:boxBackgroundColor="#FFFFFF">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editHabilidades"
+                    android:id="@+id/editHabilidade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="90dp"
+                    android:minHeight="80dp"
                     android:gravity="top|start"
                     android:inputType="textMultiLine"
                     android:textColor="@color/textoescuro"
@@ -206,7 +212,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="RESUMO DA EXPERIÊNCIA"
+                android:text="EXPERIÊNCIA"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:textColor="@color/verde"
@@ -218,7 +224,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Fale sobre sua trajetória profissional"
+                android:hint="Sua trajetória profissional"
                 app:hintTextColor="@color/cinzamedio"
                 app:boxStrokeColor="@color/verde"
                 app:boxStrokeWidth="1dp"
@@ -233,70 +239,49 @@
                     android:id="@+id/editExperiencia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="110dp"
+                    android:minHeight="100dp"
                     android:gravity="top|start"
                     android:inputType="textMultiLine"
                     android:textColor="@color/textoescuro"
                     android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RESUMO"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="@color/verde"
+                android:letterSpacing="0.08"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:baselineAligned="false">
+                android:hint="Um breve resumo sobre o seu perfil"
+                app:hintTextColor="@color/cinzamedio"
+                app:boxStrokeColor="@color/verde"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxBackgroundColor="#FFFFFF">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editResumo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TIPO DE CURRÍCULO"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/verde"
-                        android:letterSpacing="0.08"
-                        android:layout_marginBottom="6dp" />
-
-                    <Spinner
-                        android:id="@+id/spinnerTipoCurriculo"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:background="@android:drawable/btn_dropdown"
-                        android:backgroundTint="@color/verde" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TEMA ESCOLHIDO"
-                        android:textSize="10sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/verde"
-                        android:letterSpacing="0.08"
-                        android:layout_marginBottom="6dp" />
-
-                    <Spinner
-                        android:id="@+id/spinnerTema"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:background="@android:drawable/btn_dropdown"
-                        android:backgroundTint="@color/verde" />
-                </LinearLayout>
-            </LinearLayout>
+                    android:minHeight="100dp"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/textoescuro"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btnSalvar"
@@ -304,7 +289,7 @@
                 android:layout_height="54dp"
                 android:layout_marginTop="36dp"
                 android:layout_marginBottom="16dp"
-                android:text="Salvar Alterações"
+                android:text="Salvar Currículo"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
