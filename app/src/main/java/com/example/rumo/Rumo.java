@@ -2,11 +2,15 @@ package com.example.rumo;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.rumo.dao.CurriculoDAO;
+import com.example.rumo.model.Curriculo;
 
 import java.util.ArrayList;
 import java.util.List;

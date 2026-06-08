@@ -27,7 +27,7 @@
             android:name=".Cadastro"
             android:exported="false" />
         <activity
-            android:name=".Rumo"
+            android:name=".LoginCadastro"
             android:exported="false" />
         <activity
             android:name=".DadosVagaCurriculo"
@@ -36,7 +36,7 @@
             android:name=".EscolhaCurriculo"
             android:exported="false" />
         <activity
-            android:name=".LoginCadastro"
+            android:name=".Rumo"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
