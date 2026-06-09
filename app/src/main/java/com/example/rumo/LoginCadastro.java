@@ -167,7 +167,7 @@ public class LoginCadastro extends AppCompatActivity {
 
     private void irParaMain() {
         // Substitua TelaEventos pela sua activity principal
-        Intent it = new Intent(getApplicationContext(), AreaUsuario.class);
+        Intent it = new Intent(getApplicationContext(), Rumo.class);
         it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
     }
