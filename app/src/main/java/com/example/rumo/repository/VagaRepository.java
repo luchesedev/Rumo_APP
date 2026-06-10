@@ -23,8 +23,8 @@ public class VagaRepository {
     private static final String API_KEY  = "3b61c6bcbamshe766c9a32b85160p17812ejsn396b24bb043f";
     private static final String API_HOST = "jsearch.p.rapidapi.com";
 
-    // Cache válido por 6 horas
-    private static final long CACHE_VALIDADE_MS = 6 * 60 * 60 * 1000;
+    // Cache válido por 12 horas
+    private static final long CACHE_VALIDADE_MS = 12 * 60 * 60 * 1000;
 
     private static final String PREF_NAME       = "vaga_cache";
     private static final String KEY_VAGAS_JSON  = "vagas_json";
