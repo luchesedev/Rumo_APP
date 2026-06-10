@@ -534,6 +534,18 @@
                 android:textStyle="bold"
                 app:cornerRadius="12dp" />
 
+            <Button
+                android:id="@+id/btnSair"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#FF5252"
+                android:text="Sair da Conta"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
