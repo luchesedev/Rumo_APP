@@ -42,7 +42,6 @@ public class VagaRepository {
         void onSucesso(List<Vaga> vagas);
         void onErro(String mensagem);
     }
-
     public void buscarVagas(String area, String nivel, VagaCallback callback) {
         String query = area + " " + nivel + " em São Paulo, SP";
 

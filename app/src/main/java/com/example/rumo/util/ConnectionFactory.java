@@ -14,12 +14,12 @@ public class ConnectionFactory extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE tbcurriculo (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "dadosPessoais VARCHAR(200), " +
-                "objetivo VARCHAR(200), " +
-                "experiencia VARCHAR(500), " +
-                "habilidade VARCHAR(300), " +
-                "formacao VARCHAR(300), " +
-                "resumo VARCHAR(500))");
+                "dadosPessoais TEXT, " +
+                "objetivo TEXT, " +
+                "experiencia TEXT, " +
+                "habilidade TEXT, " +
+                "formacao TEXT, " +
+                "resumo TEXT)");
     }
 
     @Override
