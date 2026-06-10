@@ -25,10 +25,10 @@ public class AreaUsuario extends AppCompatActivity {
             return insets;
         });
 
-        Button btnSair = findViewById(R.id.btnSair);
+        Button btnSair = findViewById(R.id.btnSalvarRumo);
         btnSair.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            Intent it = new Intent(this, LoginCadastro.class);
+            Intent it = new Intent(this, Rumo.class);
             it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(it);
         });
