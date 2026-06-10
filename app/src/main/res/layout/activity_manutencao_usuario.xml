@@ -56,8 +56,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:animateLayoutChanges="true"
+            android:background="#F8F6F0"
+            android:orientation="vertical"
             android:paddingHorizontal="24dp"
             android:paddingVertical="28dp">
 
@@ -65,51 +66,53 @@
                 android:id="@+id/btnAbaDadosPessoais"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:letterSpacing="0.08"
                     android:text="DADOS PESSOAIS"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
                     android:textColor="@color/verde"
-                    android:letterSpacing="0.08" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/setaDadosPessoais"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="▼"
                     android:textColor="@color/verde"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/conteudoDadosPessoais"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginBottom="16dp">
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nome Completo"
                     android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/cinzamedio"
-                    app:boxStrokeColor="@color/verde"
+                    android:hint="Nome Completo"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde"
+                    app:hintTextColor="@color/cinzamedio">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editNome"
                         android:layout_width="match_parent"
@@ -123,15 +126,16 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Bairro / Cidade"
                     android:layout_marginBottom="8dp"
-                    app:hintTextColor="@color/cinzamedio"
-                    app:boxStrokeColor="@color/verde"
+                    android:hint="Bairro / Cidade"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde"
+                    app:hintTextColor="@color/cinzamedio">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editBairro"
                         android:layout_width="match_parent"
@@ -144,23 +148,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp"
                     android:baselineAligned="false"
-                    android:layout_marginBottom="8dp">
+                    android:orientation="horizontal">
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
                         android:hint="Telefone"
-                        app:hintTextColor="@color/cinzamedio"
-                        app:boxStrokeColor="@color/verde"
                         app:boxBackgroundColor="#FFFFFF"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusBottomEnd="12dp">
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/verde"
+                        app:hintTextColor="@color/cinzamedio">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTelefone"
                             android:layout_width="match_parent"
@@ -169,20 +175,22 @@
                             android:textColor="@color/textoescuro"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
                         android:layout_marginStart="4dp"
+                        android:layout_weight="1.5"
                         android:hint="E-mail"
-                        app:hintTextColor="@color/cinzamedio"
-                        app:boxStrokeColor="@color/verde"
                         app:boxBackgroundColor="#FFFFFF"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusBottomEnd="12dp">
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxStrokeColor="@color/verde"
+                        app:hintTextColor="@color/cinzamedio">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editEmail"
                             android:layout_width="match_parent"
@@ -198,13 +206,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="LinkedIn ou Portfólio (Opcional)"
-                    app:hintTextColor="@color/cinzamedio"
-                    app:boxStrokeColor="@color/verde"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde"
+                    app:hintTextColor="@color/cinzamedio">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editLink"
                         android:layout_width="match_parent"
@@ -215,56 +224,62 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="#E0E0E0" />
 
             <LinearLayout
                 android:id="@+id/btnAbaCursos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:letterSpacing="0.08"
                     android:text="ÁREA DE ATUAÇÃO / CURSOS"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
                     android:textColor="@color/verde"
-                    android:letterSpacing="0.08" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/setaCursos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="▼"
                     android:textColor="@color/verde"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/conteudoCursos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginBottom="16dp">
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Ex: Logística, Matemática (Selecione vários)"
-                    app:hintTextColor="@color/cinzamedio"
-                    app:boxStrokeColor="@color/verde"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde"
+                    app:hintTextColor="@color/cinzamedio">
+
                     <MultiAutoCompleteTextView
                         android:id="@+id/editAreaCursos"
                         android:layout_width="match_parent"
@@ -276,56 +291,62 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="#E0E0E0" />
 
             <LinearLayout
                 android:id="@+id/btnAbaFormacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:letterSpacing="0.08"
                     android:text="FORMAÇÃO DETALHADA"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
                     android:textColor="@color/verde"
-                    android:letterSpacing="0.08" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/setaFormacao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="▼"
                     android:textColor="@color/verde"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/conteudoFormacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginBottom="16dp">
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Instituição de Ensino"
                     android:layout_marginBottom="8dp"
-                    app:boxStrokeColor="@color/verde"
+                    android:hint="Instituição de Ensino"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editInstituicao"
                         android:layout_width="match_parent"
@@ -337,14 +358,15 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Período (Ex: 2022 - 2024)"
                     android:layout_marginBottom="8dp"
-                    app:boxStrokeColor="@color/verde"
+                    android:hint="Período (Ex: 2022 - 2024)"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editPeriodo"
                         android:layout_width="match_parent"
@@ -357,12 +379,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Status (Ex: Concluído / Cursando)"
-                    app:boxStrokeColor="@color/verde"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editStatus"
                         android:layout_width="match_parent"
@@ -371,126 +394,138 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="#E0E0E0" />
 
             <LinearLayout
                 android:id="@+id/btnAbaHabilidade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:letterSpacing="0.08"
                     android:text="HABILIDADES"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
                     android:textColor="@color/verde"
-                    android:letterSpacing="0.08" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/setaHabilidade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="▼"
                     android:textColor="@color/verde"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/conteudoHabilidade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginBottom="16dp">
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Suas principais competências"
-                    app:hintTextColor="@color/cinzamedio"
-                    app:boxStrokeColor="@color/verde"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde"
+                    app:hintTextColor="@color/cinzamedio">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editHabilidade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="80dp"
                         android:gravity="top|start"
                         android:inputType="textMultiLine"
+                        android:minHeight="80dp"
                         android:textColor="@color/textoescuro"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="#E0E0E0" />
 
             <LinearLayout
                 android:id="@+id/btnAbaExperiencia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
                 android:paddingVertical="12dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:letterSpacing="0.08"
                     android:text="EXPERIÊNCIA E RESUMO"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
                     android:textColor="@color/verde"
-                    android:letterSpacing="0.08" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/setaExperiencia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="▼"
                     android:textColor="@color/verde"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/conteudoExperiencia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:layout_marginBottom="16dp">
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Sua trajetória profissional"
                     android:layout_marginBottom="12dp"
-                    app:hintTextColor="@color/cinzamedio"
-                    app:boxStrokeColor="@color/verde"
+                    android:hint="Sua trajetória profissional"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde"
+                    app:hintTextColor="@color/cinzamedio">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editExperiencia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="100dp"
                         android:gravity="top|start"
                         android:inputType="textMultiLine"
+                        android:minHeight="100dp"
                         android:textColor="@color/textoescuro"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -500,26 +535,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Um breve resumo sobre o seu perfil"
-                    app:hintTextColor="@color/cinzamedio"
-                    app:boxStrokeColor="@color/verde"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusBottomEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusBottomEnd="12dp">
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/verde"
+                    app:hintTextColor="@color/cinzamedio">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editResumo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="100dp"
                         android:gravity="top|start"
                         android:inputType="textMultiLine"
+                        android:minHeight="100dp"
                         android:textColor="@color/textoescuro"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#E0E0E0" android:layout_marginBottom="8dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="#E0E0E0" />
 
             <Button
                 android:id="@+id/btnSalvar"
