@@ -25,8 +25,7 @@
             android:name=".AreaUsuario"
             android:exported="false" />
         <activity
-            android:name=".LoginCadastro"
-
+            android:name=".EscolhaCurriculo"
             android:exported="false" />
         <activity
             android:name=".Vagas"
@@ -44,10 +43,10 @@
             android:name=".DadosVagaCurriculo"
             android:exported="false" />
         <activity
-            android:name=".EscolhaCurriculo"
+            android:name=".ManutencaoUsuario"
             android:exported="false" />
         <activity
-            android:name=".ManutencaoUsuario"
+            android:name=".LoginCadastro"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

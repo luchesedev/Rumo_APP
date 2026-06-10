@@ -1,5 +1,7 @@
 package com.example.rumo;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
