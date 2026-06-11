@@ -113,34 +113,7 @@
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/Txtlayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="  Ex: Cargo"
-                    app:boxBackgroundColor="#FFFFFF"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
-                    app:boxStrokeColor="@color/verde"
-                    app:hintTextColor="@color/cinzamedio">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtCargo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textCapWords"
-                        android:textColor="@color/textoescuro"
-                        android:textSize="14sp" />
-                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
-                android:background="#E0E0E0" />
 
             <Button
                 android:id="@+id/btnSalvarRumo"
