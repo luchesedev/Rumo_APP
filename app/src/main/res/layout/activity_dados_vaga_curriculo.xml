@@ -6,18 +6,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".EscolhaCurriculo">
+    android:background="#F5F2EC"
+    tools:context=".DadosVagaCurriculo">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="110dp"
-            android:background="#2E7D52"
+            android:background="@color/verde"
+            android:elevation="4dp"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingHorizontal="24dp">
@@ -28,166 +29,170 @@
                 android:text="Preenchimento de Dados"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp"
-                android:textStyle="normal" />
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="4dp"
                 android:text="Adicione os dados da empresa desejada"
-                android:textColor="#A8D5BB"
+                android:textColor="#C8E6D4"
                 android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Body -->
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#F5F2EC"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:paddingTop="28dp"
-            android:paddingBottom="24dp">
+            android:fillViewport="true">
 
-            <!-- Label + Campo: Cargo -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CARGO DA VAGA"
-                android:textColor="#5F5E5A"
-                android:textSize="11sp"
-                android:letterSpacing="0.08"
-                android:textStyle="bold"
-                android:layout_marginBottom="6dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/info1"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:startIconTint="#2E7D52"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxStrokeColor="@color/white"
-                app:boxBackgroundColor="@color/white"
-                app:errorEnabled="true"
-                app:errorTextColor="#FF6B6B"
-                app:hintEnabled="false">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/info1Input"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:hint="Ex: Desenvolvedor Android"
-                    android:inputType="text"
-                    android:textColor="#1C1C1C"
-                    android:textColorHint="#AAAAAA"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Label + Campo: Descrição -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DESCRIÇÃO DA VAGA"
-                android:textColor="#5F5E5A"
-                android:textSize="11sp"
-                android:letterSpacing="0.08"
-                android:textStyle="bold"
-                android:layout_marginBottom="6dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/info2"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:startIconTint="#2E7D52"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxStrokeColor="@color/white"
-                app:boxBackgroundColor="@color/white"
-                app:errorEnabled="true"
-                app:errorTextColor="#FF6B6B"
-                app:hintEnabled="false">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/info2Input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Descreva as responsabilidades e requisitos..."
-                    android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:textColor="#1C1C1C"
-                    android:textColorHint="#AAAAAA"
-                    android:textSize="14sp"
-                    android:gravity="top" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Label + Campo: Palavras-chave -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PALAVRAS-CHAVE"
-                android:textColor="#5F5E5A"
-                android:textSize="11sp"
-                android:letterSpacing="0.08"
-                android:textStyle="bold"
-                android:layout_marginBottom="6dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/info3"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="28dp"
-                app:startIconTint="#2E7D52"
-                app:boxCornerRadiusTopStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxStrokeColor="@color/white"
-                app:boxBackgroundColor="@color/white"
-                app:errorEnabled="true"
-                app:errorTextColor="#FF6B6B"
-                app:hintEnabled="false">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/info3Input"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:hint="Ex: Kotlin, Android, REST API"
-                    android:inputType="text"
-                    android:textColor="#1C1C1C"
-                    android:textColorHint="#AAAAAA"
-                    android:textSize="14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Botões -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="32dp"
+                android:paddingBottom="32dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:letterSpacing="0.05"
+                    android:text="CARGO DA VAGA"
+                    android:textColor="#5F5E5A"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/info1"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="#A8D5BB"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:errorEnabled="false"
+                    app:hintEnabled="false"
+                    app:startIconTint="#2E7D52">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/info1Input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ex: Desenvolvedor Android"
+                        android:inputType="text"
+                        android:paddingVertical="14dp"
+                        android:textColor="#1C1C1C"
+                        android:textColorHint="#AAAAAA"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:letterSpacing="0.05"
+                    android:text="DESCRIÇÃO DA VAGA"
+                    android:textColor="#5F5E5A"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/info2"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="#A8D5BB"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:errorEnabled="false"
+                    app:hintEnabled="false"
+                    app:startIconTint="#2E7D52">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/info2Input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:hint="Descreva as responsabilidades e requisitos..."
+                        android:inputType="textMultiLine"
+                        android:minLines="4"
+                        android:paddingVertical="14dp"
+                        android:textColor="#1C1C1C"
+                        android:textColorHint="#AAAAAA"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:letterSpacing="0.05"
+                    android:text="PALAVRAS-CHAVE"
+                    android:textColor="#5F5E5A"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/info3"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    app:boxBackgroundColor="@color/white"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="#A8D5BB"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:errorEnabled="false"
+                    app:hintEnabled="false"
+                    app:startIconTint="#2E7D52">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/info3Input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ex: Kotlin, Android, REST API"
+                        android:inputType="text"
+                        android:paddingVertical="14dp"
+                        android:textColor="#1C1C1C"
+                        android:textColorHint="#AAAAAA"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
                 <Button
                     android:id="@+id/continuar"
-                    android:layout_width="0dp"
-                    android:layout_height="46dp"
-                    android:layout_weight="2"
-                    android:backgroundTint="#2E7D52"
-                    android:text="Criar Curriculo"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:backgroundTint="@color/verde"
+                    android:text="Criar Currículo"
                     android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
                     app:cornerRadius="12dp" />
 
             </LinearLayout>
-
-        </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

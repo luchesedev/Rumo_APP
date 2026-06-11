@@ -14,7 +14,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.UnitValue;
+import com.itextpdf.kernel.geom.PageSize;
+import com.example.rumo.BuildConfig;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -50,9 +55,11 @@ public class DadosVagaCurriculo extends AppCompatActivity {
 
     // ⚠️ ATENÇÃO: Mova essa chave para um arquivo local.properties ou para um backend
     // Nunca a deixe exposta em produção — qualquer um pode extrair do APK compilado.
-    private static final String API_KEY = "AIzaSyD4IGtNxy3eLCJI9zo0KqY8IMp-27VdcpE";
+    private static final String API_KEY = "AQ.Ab8RN6JmaCz3-dweAWwR-8rjyPwFPSTohrwO-Z0PVQ47Yi7tMw";
+    // No DadosVagaCurriculo.java, linha do GEMINI_URL:
+
     private static final String GEMINI_URL =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + API_KEY;
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + BuildConfig.GEMINI_API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +116,9 @@ public class DadosVagaCurriculo extends AppCompatActivity {
     // ─────────────────────────────────────────────────────────────────────────
 
     private void gerarCurriculoComIA(String cargo, String descricao, String palavras, String formato) {
+
+
+
 
         // Dados fictícios do candidato — substitua por dados reais do seu usuário
         String dadosCandidato = "Nome: João Silva\n"
@@ -178,9 +188,20 @@ public class DadosVagaCurriculo extends AppCompatActivity {
                     // Garante que o body seja fechado mesmo em caso de erro
                     try (ResponseBody responseBody = response.body()) {
                         if (!response.isSuccessful() || responseBody == null) {
+                            int codigo = response.code();
+                            String mensagem;
+
+                            if (codigo == 403) {
+                                mensagem = "Acesso negado pela API (403). Verifique se a chave está correta e o projeto está ativo.";
+                            } else if (codigo == 429) {
+                                mensagem = "Limite de requisições atingido. Aguarde 1 minuto e tente novamente.";
+                            } else {
+                                mensagem = "Erro na API do Gemini (código " + codigo + ").";
+                            }
+
                             runOnUiThread(() -> {
                                 reativarBotao();
-                                mostrarErro("Erro na API do Gemini (código " + response.code() + ").");
+                                mostrarErro(mensagem);
                             });
                             return;
                         }
@@ -215,13 +236,7 @@ public class DadosVagaCurriculo extends AppCompatActivity {
             mostrarErro("Erro interno ao preparar a requisição.");
         }
     }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Geração e salvamento do PDF
-    // ─────────────────────────────────────────────────────────────────────────
-
     private void salvarComoPdf(String conteudo, String cargo, String formato) {
-        // Nome do arquivo: curriculo_Desenvolvedor_Android_ATS.pdf
         String nomeArquivo = "curriculo_"
                 + cargo.replaceAll("[^a-zA-Z0-9À-ú]", "_")
                 + "_" + formato + ".pdf";
@@ -233,7 +248,6 @@ public class DadosVagaCurriculo extends AppCompatActivity {
                 mostrarErro("Não foi possível criar o arquivo PDF no dispositivo.");
                 return;
             }
-
             gerarPdf(outputStream, conteudo, cargo, formato, nomeArquivo);
 
         } catch (Exception e) {
@@ -243,14 +257,8 @@ public class DadosVagaCurriculo extends AppCompatActivity {
         }
     }
 
-    /**
-     * Retorna um OutputStream compatível com Android 9 (API 28) e Android 10+ (API 29+).
-     * No Android 10+, usa MediaStore (sem necessidade de permissão WRITE_EXTERNAL_STORAGE).
-     * No Android 9 e abaixo, salva em Downloads (requer a permissão no Manifest).
-     */
     private OutputStream obterOutputStreamParaPdf(String nomeArquivo) throws IOException {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            // Android 10+ — usa MediaStore, sem permissão extra necessária
             ContentValues values = new ContentValues();
             values.put(MediaStore.Downloads.DISPLAY_NAME, nomeArquivo);
             values.put(MediaStore.Downloads.MIME_TYPE, "application/pdf");
@@ -259,11 +267,9 @@ public class DadosVagaCurriculo extends AppCompatActivity {
             Uri uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
             if (uri == null) return null;
 
-            // Guarda a URI para abrir o arquivo depois
             pdfUriParaAbrir = uri;
             return getContentResolver().openOutputStream(uri);
         } else {
-            // Android 9 e abaixo — precisa de WRITE_EXTERNAL_STORAGE no Manifest
             java.io.File pastaDownloads = Environment
                     .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             if (!pastaDownloads.exists()) pastaDownloads.mkdirs();
@@ -274,103 +280,307 @@ public class DadosVagaCurriculo extends AppCompatActivity {
         }
     }
 
-    // Armazena a URI do PDF gerado para abrir depois
     private Uri pdfUriParaAbrir;
 
-    /**
-     * Gera o PDF usando iText7.
-     * O texto retornado pela IA é dividido por linhas. Linhas em MAIÚSCULAS
-     * são tratadas como títulos de seção (negrito + cor verde).
-     */
+    // ─────────────────────────────────────────────────────────────────────────
+    // Geração do PDF com estrutura profissional baseada no template
+    // ─────────────────────────────────────────────────────────────────────────
+
     private void gerarPdf(OutputStream outputStream, String conteudo,
                           String cargo, String formato, String nomeArquivo) throws Exception {
 
-        PdfWriter writer = new PdfWriter(outputStream);
-        PdfDocument pdfDoc = new PdfDocument(writer);
+        // Cores da paleta (cinza escuro para títulos de seção, como no template)
+        com.itextpdf.kernel.colors.DeviceRgb COR_TITULO_SECAO   = new com.itextpdf.kernel.colors.DeviceRgb(60, 60, 60);   // #3C3C3C — fundo do cabeçalho de seção
+        com.itextpdf.kernel.colors.DeviceRgb COR_TEXTO_SECAO    = new com.itextpdf.kernel.colors.DeviceRgb(255, 255, 255); // branco — texto do cabeçalho
+        com.itextpdf.kernel.colors.DeviceRgb COR_SUBTITULO_INFO = new com.itextpdf.kernel.colors.DeviceRgb(80, 80, 80);    // cinza médio — dados pessoais
+        com.itextpdf.kernel.colors.DeviceRgb COR_TEXTO_NORMAL   = new com.itextpdf.kernel.colors.DeviceRgb(30, 30, 30);    // quase preto — corpo
+        com.itextpdf.kernel.colors.DeviceRgb COR_VERDE_RUMO     = new com.itextpdf.kernel.colors.DeviceRgb(46, 125, 82);   // #2E7D52 — rodapé
+
+        PdfWriter writer     = new PdfWriter(outputStream);
+        PdfDocument pdfDoc   = new PdfDocument(writer);
+        // Usa tamanho A4
+        pdfDoc.setDefaultPageSize(com.itextpdf.kernel.geom.PageSize.A4);
         Document document = new Document(pdfDoc);
-        document.setMargins(50, 50, 50, 50);
+        document.setMargins(45, 50, 45, 50);
 
-        PdfFont fontNegrito = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+        PdfFont fontBold   = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
         PdfFont fontNormal = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+        PdfFont fontItalic = PdfFontFactory.createFont(StandardFonts.HELVETICA_OBLIQUE);
 
-        // ── Cabeçalho do PDF ────────────────────────────────────────────────
-        Paragraph titulo = new Paragraph("CURRÍCULO — " + cargo.toUpperCase())
-                .setFont(fontNegrito)
-                .setFontSize(16)
-                .setFontColor(ColorConstants.WHITE)
-                .setBackgroundColor(new com.itextpdf.kernel.colors.DeviceRgb(46, 125, 82)) // #2E7D52
-                .setTextAlignment(TextAlignment.CENTER)
-                .setPadding(10);
-        document.add(titulo);
+        // ── Parseia o conteúdo da IA em blocos estruturados ──────────────────
+        CurriculoEstruturado estrutura = parsearCurriculo(conteudo);
 
-        Paragraph subtitulo = new Paragraph("Formato: " + formato)
-                .setFont(fontNormal)
-                .setFontSize(10)
-                .setFontColor(new com.itextpdf.kernel.colors.DeviceRgb(95, 94, 90)) // #5F5E5A
-                .setTextAlignment(TextAlignment.CENTER)
-                .setMarginBottom(20);
-        document.add(subtitulo);
+        // ── 1. BLOCO DO NOME (grande, negrito, como no template) ─────────────
+        Paragraph nomeParagrafo = new Paragraph(estrutura.nome)
+                .setFont(fontBold)
+                .setFontSize(26)
+                .setFontColor(COR_TEXTO_NORMAL)
+                .setMarginBottom(2);
+        document.add(nomeParagrafo);
 
-        // ── Conteúdo gerado pela IA ──────────────────────────────────────────
-        String[] linhas = conteudo.split("\n");
+        // ── 2. DADOS PESSOAIS em linha (estado civil, nascimento, endereço) ──
+        if (!estrutura.dadosPessoais.isEmpty()) {
+            Paragraph dadosPessoaisParagrafo = new Paragraph(estrutura.dadosPessoais)
+                    .setFont(fontNormal)
+                    .setFontSize(9)
+                    .setFontColor(COR_SUBTITULO_INFO)
+                    .setMarginBottom(12);
+            document.add(dadosPessoaisParagrafo);
+        }
 
-        for (String linha : linhas) {
-            String linhaTrim = linha.trim();
+        // Linha separadora fina após o cabeçalho
+        adicionarSeparador(document, COR_VERDE_RUMO, 1f);
 
-            if (linhaTrim.isEmpty()) {
-                // Linha em branco vira espaço
-                document.add(new Paragraph(" ").setFontSize(4));
-                continue;
-            }
+        // ── 3. SEÇÕES DO CURRÍCULO ────────────────────────────────────────────
+        for (SecaoCurriculo secao : estrutura.secoes) {
 
-            // Detecta título de seção: linha toda em maiúsculas com pelo menos 3 chars
-            boolean ehTitulo = linhaTrim.equals(linhaTrim.toUpperCase())
-                    && linhaTrim.length() >= 3
-                    && !linhaTrim.matches(".*\\d.*"); // não é linha numérica
+            // Cabeçalho da seção — fundo cinza escuro, texto branco, negrito
+            // (estrutura idêntica ao template de referência)
+            com.itextpdf.layout.element.Table tabelaTitulo =
+                    new com.itextpdf.layout.element.Table(
+                            com.itextpdf.layout.properties.UnitValue.createPercentArray(new float[]{1}))
+                            .useAllAvailableWidth()
+                            .setMarginTop(14)
+                            .setMarginBottom(4);
 
-            if (ehTitulo) {
-                // Separador antes do título (exceto no início)
-                SolidLine line = new SolidLine(0.5f);
-                line.setColor(new com.itextpdf.kernel.colors.DeviceRgb(46, 125, 82));
-                document.add(new LineSeparator(line).setMarginTop(8).setMarginBottom(4));
+            com.itextpdf.layout.element.Cell celulaT = new com.itextpdf.layout.element.Cell()
+                    .setBackgroundColor(COR_TITULO_SECAO)
+                    .setBorder(com.itextpdf.layout.borders.Border.NO_BORDER)
+                    .setPadding(4)
+                    .setPaddingLeft(6);
 
-                document.add(new Paragraph(linhaTrim)
-                        .setFont(fontNegrito)
-                        .setFontSize(12)
-                        .setFontColor(new com.itextpdf.kernel.colors.DeviceRgb(27, 94, 54)) // #1B5E36
-                        .setMarginBottom(4));
-            } else {
-                document.add(new Paragraph(linhaTrim)
-                        .setFont(fontNormal)
-                        .setFontSize(11)
-                        .setFontColor(ColorConstants.BLACK)
-                        .setMarginBottom(2));
+            celulaT.add(new Paragraph(secao.titulo)
+                    .setFont(fontBold)
+                    .setFontSize(10)
+                    .setFontColor(COR_TEXTO_SECAO)
+                    .setMarginBottom(0));
+
+            tabelaTitulo.addCell(celulaT);
+            document.add(tabelaTitulo);
+
+            // Conteúdo da seção — processa linha a linha
+            for (LinhaConteudo linha : secao.linhas) {
+                switch (linha.tipo) {
+
+                    case BULLET:
+                        // Bullet point com "•" manual (compatível com todas fontes)
+                        Paragraph bullet = new Paragraph()
+                                .setFont(fontNormal)
+                                .setFontSize(10)
+                                .setFontColor(COR_TEXTO_NORMAL)
+                                .setMarginBottom(2)
+                                .setMarginLeft(12)
+                                .setFirstLineIndent(-10);
+                        bullet.add("•  " + linha.texto);
+                        document.add(bullet);
+                        break;
+
+                    case SUBTITULO:
+                        // Ex: "Consultor Sênior — Empresa XYZ (Jan 2020 – atual)"
+                        // Negrito, levemente maior
+                        document.add(new Paragraph(linha.texto)
+                                .setFont(fontBold)
+                                .setFontSize(10)
+                                .setFontColor(COR_TEXTO_NORMAL)
+                                .setMarginTop(6)
+                                .setMarginBottom(1));
+                        break;
+
+                    case EMPRESA:
+                        // Ex: "Empresa: Nome da Empresa"
+                        document.add(new Paragraph(linha.texto)
+                                .setFont(fontBold)
+                                .setFontSize(9)
+                                .setFontColor(COR_SUBTITULO_INFO)
+                                .setMarginBottom(2));
+                        break;
+
+                    case NORMAL:
+                    default:
+                        document.add(new Paragraph(linha.texto)
+                                .setFont(fontNormal)
+                                .setFontSize(10)
+                                .setFontColor(COR_TEXTO_NORMAL)
+                                .setMarginBottom(2));
+                        break;
+                }
             }
         }
 
-        // ── Rodapé ───────────────────────────────────────────────────────────
-        document.add(new Paragraph("\n"));
-        SolidLine rodapeLine = new SolidLine(0.5f);
-        rodapeLine.setColor(new com.itextpdf.kernel.colors.DeviceRgb(168, 213, 187)); // #A8D5BB
-        document.add(new LineSeparator(rodapeLine));
-
-        document.add(new Paragraph("Gerado pelo app Rumo")
-                .setFont(fontNormal)
-                .setFontSize(8)
-                .setFontColor(new com.itextpdf.kernel.colors.DeviceRgb(168, 213, 187))
-                .setTextAlignment(TextAlignment.CENTER)
-                .setMarginTop(4));
-
+        // ── 4. RODAPÉ ─────────────────────────────────────────────────────────
         document.close();
 
-        // ── Notifica o usuário ────────────────────────────────────────────────
+       
+
         runOnUiThread(() -> {
             reativarBotao();
             mostrarSucessoComAbertura(nomeArquivo);
         });
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Parser: converte o texto da IA em estrutura organizada
+    // ─────────────────────────────────────────────────────────────────────────
 
+    /**
+     * Nomes de seções que o Gemini costuma gerar — insensível a maiúsculas.
+     * Qualquer linha que CONTENHA uma dessas palavras e esteja em maiúsculas
+     * ou seguida de ":" será tratada como cabeçalho de seção.
+     */
+    private static final String[] PALAVRAS_SECAO = {
+            "RESUMO", "OBJETIVO", "PERFIL",
+            "EXPERIÊNCIA", "EXPERIENCIA", "PROFISSIONAL",
+            "FORMAÇÃO", "FORMACAO", "ACADÊMICA", "ACADEMICA",
+            "HABILIDADES", "COMPETÊNCIAS", "COMPETENCIAS",
+            "CERTIFICAÇÕES", "CERTIFICACOES",
+            "IDIOMAS", "CURSOS", "PROJETOS", "CONQUISTAS"
+    };
+
+    private CurriculoEstruturado parsearCurriculo(String texto) {
+        CurriculoEstruturado estrutura = new CurriculoEstruturado();
+        String[] linhas = texto.split("\n");
+
+        SecaoCurriculo secaoAtual = null;
+        boolean nomeExtraido = false;
+
+        for (String linha : linhas) {
+            String t = linha.trim();
+            if (t.isEmpty()) continue;
+
+            // Limpa marcadores markdown que o Gemini às vezes inclui
+            // ex: **Texto**, ## Texto, *Texto*
+            t = t.replaceAll("\\*\\*(.+?)\\*\\*", "$1")  // **negrito**
+                    .replaceAll("\\*(.+?)\\*", "$1")          // *itálico*
+                    .replaceAll("^#{1,3}\\s*", "")            // ## títulos markdown
+                    .trim();
+
+            if (t.isEmpty()) continue;
+
+            // ── Extrai o nome (primeira linha não-vazia como nome principal) ──
+            if (!nomeExtraido) {
+                estrutura.nome = t;
+                nomeExtraido = true;
+                continue;
+            }
+
+            // ── Extrai dados pessoais (2ª e 3ª linha, antes da 1ª seção) ────
+            if (secaoAtual == null && !ehTituloDeSecao(t)) {
+                if (estrutura.dadosPessoais.isEmpty()) {
+                    estrutura.dadosPessoais = t;
+                } else {
+                    estrutura.dadosPessoais += "  |  " + t;
+                }
+                continue;
+            }
+
+            // ── Detecta início de nova seção ─────────────────────────────────
+            if (ehTituloDeSecao(t)) {
+                secaoAtual = new SecaoCurriculo();
+                // Remove ":" do final se houver
+                secaoAtual.titulo = t.replaceAll(":$", "").trim().toUpperCase();
+                estrutura.secoes.add(secaoAtual);
+                continue;
+            }
+
+            // ── Adiciona linha ao conteúdo da seção atual ────────────────────
+            if (secaoAtual != null) {
+                LinhaConteudo lc = new LinhaConteudo();
+
+                if (t.startsWith("-") || t.startsWith("•") || t.startsWith("*")) {
+                    // Bullet point — remove o marcador inicial
+                    lc.tipo = TipoLinha.BULLET;
+                    lc.texto = t.replaceAll("^[-•*]\\s*", "").trim();
+
+                } else if (t.toLowerCase().startsWith("empresa:") ||
+                        t.toLowerCase().startsWith("company:")) {
+                    lc.tipo = TipoLinha.EMPRESA;
+                    lc.texto = t;
+
+                } else if (ehSubtitulo(t)) {
+                    // Linha de cargo/período: tem traço (–) ou parêntese com data
+                    lc.tipo = TipoLinha.SUBTITULO;
+                    lc.texto = t;
+
+                } else {
+                    lc.tipo = TipoLinha.NORMAL;
+                    lc.texto = t;
+                }
+
+                secaoAtual.linhas.add(lc);
+            }
+        }
+
+        // Fallback: se não extraiu nome, usa o cargo
+        if (estrutura.nome == null || estrutura.nome.isEmpty()) {
+            estrutura.nome = "Currículo";
+        }
+
+        return estrutura;
+    }
+
+    /** Verifica se a linha é um título de seção (ex: "EXPERIÊNCIA PROFISSIONAL") */
+    private boolean ehTituloDeSecao(String linha) {
+        String upper = linha.toUpperCase();
+
+        // Critério 1: linha toda em maiúsculas com pelo menos 4 chars
+        boolean todoMaiusculo = linha.equals(linha.toUpperCase())
+                && linha.length() >= 4
+                && linha.matches("[A-ZÁÉÍÓÚÃÕÂÊÔÇÀ\\s\\-:]+");
+
+        // Critério 2: contém palavra-chave de seção
+        boolean contemPalavraChave = false;
+        for (String palavra : PALAVRAS_SECAO) {
+            if (upper.contains(palavra)) {
+                contemPalavraChave = true;
+                break;
+            }
+        }
+
+        return todoMaiusculo || (contemPalavraChave && linha.length() < 60);
+    }
+
+    /** Verifica se é uma linha de subtítulo (cargo + período, com traço ou parêntese) */
+    private boolean ehSubtitulo(String linha) {
+        return (linha.contains("–") || linha.contains("-") || linha.contains("—"))
+                && (linha.matches(".*\\d{4}.*") || linha.toLowerCase().contains("atual")
+                || linha.toLowerCase().contains("present"));
+    }
+
+    /** Adiciona linha separadora horizontal */
+    private void adicionarSeparador(Document doc,
+                                    com.itextpdf.kernel.colors.DeviceRgb cor,
+                                    float espessura) throws Exception {
+        SolidLine sl = new SolidLine(espessura);
+        sl.setColor(cor);
+        doc.add(new LineSeparator(sl).setMarginBottom(6));
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Classes de modelo interno (estrutura do currículo parseado)
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private static class CurriculoEstruturado {
+        String nome = "";
+        String dadosPessoais = "";
+        java.util.List<SecaoCurriculo> secoes = new java.util.ArrayList<>();
+    }
+
+    private static class SecaoCurriculo {
+        String titulo = "";
+        java.util.List<LinhaConteudo> linhas = new java.util.ArrayList<>();
+    }
+
+    private static class LinhaConteudo {
+        TipoLinha tipo = TipoLinha.NORMAL;
+        String texto = "";
+    }
+
+    private enum TipoLinha {
+        NORMAL,    // parágrafo comum
+        BULLET,    // item de lista com "•"
+        SUBTITULO, // cargo + período (negrito)
+        EMPRESA    // "Empresa: Nome"
+    }
 
     private void reativarBotao() {
         btnContinuar.setEnabled(true);

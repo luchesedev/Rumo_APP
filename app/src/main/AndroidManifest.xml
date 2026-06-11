@@ -46,7 +46,11 @@
             android:name=".ManutencaoUsuario"
             android:exported="false" />
         <activity
+<<<<<<< Updated upstream
             android:name=".LoginCadastro"
+=======
+            android:name=".EscolhaCurriculo"
+>>>>>>> Stashed changes
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

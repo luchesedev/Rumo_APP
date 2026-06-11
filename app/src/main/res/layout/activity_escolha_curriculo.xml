@@ -12,14 +12,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="vertical">
 
-        <!-- Faixa verde no topo -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="110dp"
-            android:background="#2E7D52"
+            android:background="@color/verde"
+            android:elevation="4dp"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingHorizontal="24dp">
@@ -29,18 +28,18 @@
                 android:layout_height="wrap_content"
                 android:text="Criação do currículo"
                 android:textColor="#FFFFFF"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="4dp"
                 android:text="Escolha o tipo de formato"
-                android:textColor="#A8D5BB"
+                android:textColor="#C8E6D4"
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Corpo -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -50,114 +49,105 @@
             android:orientation="vertical"
             android:paddingHorizontal="24dp">
 
-            <!-- Botões grandes -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
+                android:baselineAligned="false"
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <!-- ATS -->
                 <LinearLayout
                     android:id="@+id/cardAts"
                     android:layout_width="0dp"
-                    android:layout_height="160dp"
+                    android:layout_height="170dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:background="#E8F5EE"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
                         android:src="@drawable/ia"
                         android:tint="#2E7D52" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="12dp"
                         android:text="ATS"
                         android:textColor="#1B5E36"
-                        android:textSize="15sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:paddingHorizontal="8dp"
-                        android:text="Para sistemas de triagem"
+                        android:text="Para sistemas automáticos de triagem"
                         android:textColor="#3B7A55"
-                        android:textSize="11sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Humanizado -->
                 <LinearLayout
                     android:id="@+id/cardHuman"
                     android:layout_width="0dp"
-                    android:layout_height="160dp"
+                    android:layout_height="170dp"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="#C8E6D4"
                     android:clickable="true"
                     android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
                         android:src="@drawable/person"
                         android:tint="#1B5E36" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="12dp"
                         android:text="Humanizado"
                         android:textColor="#1B5E36"
-                        android:textSize="15sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="6dp"
                         android:gravity="center"
-                        android:paddingHorizontal="8dp"
-                        android:text="Formato pessoal e criativo"
+                        android:text="Formato pessoal, criativo e engajador"
                         android:textColor="#2E7D52"
-                        android:textSize="11sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Botões Voltar / Continuar -->
-            <LinearLayout
+            <Button
+                android:id="@+id/voltar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <Button
-                    android:id="@+id/voltar"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="#A8D5BB"
-                    android:text="Voltar"
-                    android:textColor="#1B5E36" />
-
-            </LinearLayout>
+                android:layout_height="50dp"
+                android:backgroundTint="@color/verde"
+                android:elevation="0dp"
+                android:text="Voltar"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
 
         </LinearLayout>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

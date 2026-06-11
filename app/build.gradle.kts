@@ -1,3 +1,4 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
@@ -19,7 +20,23 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // ─── CÓDIGO NOVO: LEITURA DA API KEY (KOTLIN DSL) ─────────────────
+        val properties = Properties()
+        val localPropertiesFile = project.rootProject.file("local.properties")
+        if (localPropertiesFile.canRead()) {
+            localPropertiesFile.inputStream().use { properties.load(it) }
+        }
+        val geminiKey = properties.getProperty("gemini.api.key") ?: ""
+        buildConfigField("String", "GEMINI_API_KEY", "\"$geminiKey\"")
+        // ──────────────────────────────────────────────────────────────────
     }
+
+    // ─── CÓDIGO NOVO: ATIVAR O BUILD CONFIG ──────────────────────────────
+    buildFeatures {
+        buildConfig = true
+    }
+    // ──────────────────────────────────────────────────────────────────
 
     buildTypes {
         release {
@@ -48,10 +65,12 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:34.14.0"))
+
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-// OkHttp (logs de requisição)
+
+    // OkHttp (logs de requisição)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("com.itextpdf:itext7-core:7.2.5")
 }
