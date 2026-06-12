@@ -7,8 +7,7 @@ import androidx.annotation.Nullable;
 
 public class ConnectionFactory extends SQLiteOpenHelper {
 
-    // É importante manter a versão como 2 agora que alteramos a estrutura da tabela
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3; // ← incrementado para 3
     private static final String DATABASE_NAME = "dbCurriculo.db";
 
     public ConnectionFactory(@Nullable Context context) {
@@ -17,28 +16,28 @@ public class ConnectionFactory extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Criando a tabela com a coluna email incluída
         String sql = "CREATE TABLE tbcurriculo (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "email TEXT, " +
-                "dadosPessoais TEXT, " +
-                "objetivo TEXT, " +
-                "experiencia TEXT, " +
-                "habilidade TEXT, " +
-                "formacao TEXT, " +
-                "resumo TEXT)";
+                "id              INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "email           TEXT, " +
+                "dadosPessoais   TEXT, " +
+                "objetivo        TEXT, " +
+                "experiencia     TEXT, " +
+                "habilidade      TEXT, " +
+                "formacao        TEXT, " +
+                "resumo          TEXT, " +
+                "curriculoGerado TEXT)"; // ← coluna nova
         db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Se estivermos atualizando da versão 1 para a 2, apenas adicionamos a coluna
         if (oldVersion < 2) {
+            // migration v1 → v2: adiciona email
             db.execSQL("ALTER TABLE tbcurriculo ADD COLUMN email TEXT");
-        } else {
-            // Caso seja uma atualização mais drástica, recriamos a tabela
-            db.execSQL("DROP TABLE IF EXISTS tbcurriculo");
-            onCreate(db);
+        }
+        if (oldVersion < 3) {
+            // migration v2 → v3: adiciona curriculoGerado
+            db.execSQL("ALTER TABLE tbcurriculo ADD COLUMN curriculoGerado TEXT");
         }
     }
 }

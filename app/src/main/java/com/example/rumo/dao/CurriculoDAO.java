@@ -17,7 +17,6 @@ public class CurriculoDAO {
 
     public CurriculoDAO(Context context) {
         try {
-            // Agora o ConnectionFactory cuida do nome e da versão internamente
             conexao = new ConnectionFactory(context);
             banco = conexao.getWritableDatabase();
         } catch (Exception e) {
@@ -25,79 +24,136 @@ public class CurriculoDAO {
         }
     }
 
+    // ── Insert ──────────────────────────────────────────────────────────────
     public long Insert(Curriculo curriculo) {
-        ContentValues values = new ContentValues();
-        values.put("email", curriculo.getEmail());
-        values.put("dadosPessoais", curriculo.getDadosPessoais());
-        values.put("objetivo", curriculo.getObjetivo());
-        values.put("experiencia", curriculo.getExperiencia());
-        values.put("habilidade", curriculo.getHabilidade());
-        values.put("formacao", curriculo.getFormacao());
-        values.put("resumo", curriculo.getResumo());
-        return banco.insert("tbcurriculo", null, values);
+        return banco.insert("tbcurriculo", null, montarValues(curriculo));
     }
 
+    // ── Update ──────────────────────────────────────────────────────────────
     public void update(Curriculo curriculo) {
-        ContentValues values = new ContentValues();
-        // CORREÇÃO: Você precisa incluir o email no update também!
-        values.put("email", curriculo.getEmail());
-        values.put("dadosPessoais", curriculo.getDadosPessoais());
-        values.put("objetivo", curriculo.getObjetivo());
-        values.put("experiencia", curriculo.getExperiencia());
-        values.put("habilidade", curriculo.getHabilidade());
-        values.put("formacao", curriculo.getFormacao());
-        values.put("resumo", curriculo.getResumo());
-
         String[] args = {String.valueOf(curriculo.getId())};
-        banco.update("tbcurriculo", values, "id=?", args);
+        banco.update("tbcurriculo", montarValues(curriculo), "id=?", args);
     }
 
+    // ── Salva ou atualiza pelo e-mail ────────────────────────────────────────
+    // Se já existe um currículo com aquele e-mail, sobrescreve.
+    // Se não existe, insere um novo.
+    // Retorna o Curriculo com o id correto preenchido.
+    public Curriculo salvarOuAtualizar(Curriculo curriculo) {
+        Curriculo existente = buscarPorEmail(curriculo.getEmail());
+        if (existente != null) {
+            curriculo.setId(existente.getId());
+            update(curriculo);
+        } else {
+            long novoId = Insert(curriculo);
+            curriculo.setId((int) novoId);
+        }
+        return curriculo;
+    }
+
+    // ── Busca por e-mail ─────────────────────────────────────────────────────
     public Curriculo buscarPorEmail(String email) {
-        // CORREÇÃO: Verifique se o e-mail não é nulo antes de buscar
         if (email == null) return null;
 
         Cursor cursor = banco.query("tbcurriculo",
-                new String[]{"id", "dadosPessoais", "objetivo", "experiencia", "habilidade", "formacao", "resumo", "email"},
-                "email = ?", new String[]{email}, null, null, null);
+                new String[]{"id", "email", "dadosPessoais", "objetivo",
+                        "experiencia", "habilidade", "formacao", "resumo", "curriculoGerado"},
+                "email = ?", new String[]{email},
+                null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            Curriculo c = new Curriculo();
-            c.setId(cursor.getInt(0));
-            c.setDadosPessoais(cursor.getString(1));
-            c.setObjetivo(cursor.getString(2));
-            c.setExperiencia(cursor.getString(3));
-            c.setHabilidade(cursor.getString(4));
-            c.setFormacao(cursor.getString(5));
-            c.setResumo(cursor.getString(6));
-            c.setEmail(cursor.getString(7)); // Certifique-se de que o set do e-mail existe no modelo
+            Curriculo c = mapearCursor(cursor);
             cursor.close();
             return c;
         }
         if (cursor != null) cursor.close();
         return null;
     }
+
+    // ── Busca por id ─────────────────────────────────────────────────────────
+    public Curriculo buscarPorId(int id) {
+        Cursor cursor = banco.query("tbcurriculo",
+                new String[]{"id", "email", "dadosPessoais", "objetivo",
+                        "experiencia", "habilidade", "formacao", "resumo", "curriculoGerado"},
+                "id = ?", new String[]{String.valueOf(id)},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            Curriculo c = mapearCursor(cursor);
+            cursor.close();
+            return c;
+        }
+        if (cursor != null) cursor.close();
+        return null;
+    }
+
+    // ── Lista todos ──────────────────────────────────────────────────────────
     public List<Curriculo> obterTodos() {
         List<Curriculo> curriculos = new ArrayList<>();
+
         Cursor cursor = banco.query("tbcurriculo",
-                new String[]{"id", "dadosPessoais", "objetivo", "experiencia", "habilidade", "formacao", "resumo", "email"},
+                new String[]{"id", "email", "dadosPessoais", "objetivo",
+                        "experiencia", "habilidade", "formacao", "resumo", "curriculoGerado"},
                 null, null, null, null, null);
+
         while (cursor.moveToNext()) {
-            Curriculo c = new Curriculo();
-            c.setId(cursor.getInt(0));
-            c.setDadosPessoais(cursor.getString(1));
-            c.setObjetivo(cursor.getString(2));
-            c.setExperiencia(cursor.getString(3));
-            c.setHabilidade(cursor.getString(4));
-            c.setFormacao(cursor.getString(5));
-            c.setResumo(cursor.getString(6));
-            c.setEmail(cursor.getString(7));
-            curriculos.add(c);
+            curriculos.add(mapearCursor(cursor));
         }
         cursor.close();
         return curriculos;
     }
+
+    // ── Delete ───────────────────────────────────────────────────────────────
     public void delete(Curriculo curriculo) {
         String[] args = {String.valueOf(curriculo.getId())};
         banco.delete("tbcurriculo", "id=?", args);
+    }
+
+    // ── Helpers privados ─────────────────────────────────────────────────────
+
+    private ContentValues montarValues(Curriculo c) {
+        ContentValues values = new ContentValues();
+        values.put("email",           c.getEmail());
+        values.put("dadosPessoais",   c.getDadosPessoais());
+        values.put("objetivo",        c.getObjetivo());
+        values.put("experiencia",     c.getExperiencia());
+        values.put("habilidade",      c.getHabilidade());
+        values.put("formacao",        c.getFormacao());
+        values.put("resumo",          c.getResumo());
+        values.put("curriculoGerado", c.getCurriculoGerado());
+        return values;
+    }
+
+    private Curriculo mapearCursor(Cursor cursor) {
+        Curriculo c = new Curriculo();
+        c.setId(            cursor.getInt(   cursor.getColumnIndexOrThrow("id")));
+        c.setEmail(         cursor.getString(cursor.getColumnIndexOrThrow("email")));
+        c.setDadosPessoais( cursor.getString(cursor.getColumnIndexOrThrow("dadosPessoais")));
+        c.setObjetivo(      cursor.getString(cursor.getColumnIndexOrThrow("objetivo")));
+        c.setExperiencia(   cursor.getString(cursor.getColumnIndexOrThrow("experiencia")));
+        c.setHabilidade(    cursor.getString(cursor.getColumnIndexOrThrow("habilidade")));
+        c.setFormacao(      cursor.getString(cursor.getColumnIndexOrThrow("formacao")));
+        c.setResumo(        cursor.getString(cursor.getColumnIndexOrThrow("resumo")));
+        c.setCurriculoGerado(cursor.getString(cursor.getColumnIndexOrThrow("curriculoGerado")));
+        return c;
+    }
+
+    // ── Lista apenas os currículos que já foram gerados pela IA ──────────────
+    public List<Curriculo> obterCurriculosProntos() {
+        List<Curriculo> curriculos = new ArrayList<>();
+
+        // O filtro "curriculoGerado IS NOT NULL AND curriculoGerado != ''"
+        // garante que o perfil de manutenção não apareça na lista.
+        Cursor cursor = banco.query("tbcurriculo",
+                new String[]{"id", "email", "dadosPessoais", "objetivo",
+                        "experiencia", "habilidade", "formacao", "resumo", "curriculoGerado"},
+                "curriculoGerado IS NOT NULL AND curriculoGerado != ''",
+                null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            curriculos.add(mapearCursor(cursor));
+        }
+        cursor.close();
+        return curriculos;
     }
 }
