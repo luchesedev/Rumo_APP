@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -26,13 +24,12 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginCadastro extends Tela_Base  {
+public class LoginCadastro extends Tela_Base {
 
     private TextInputLayout layoutEmail, layoutSenha;
     private TextInputEditText editEmail, editSenha;
     private Button btnLogin;
     private TextView txtEsqueciSenha;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -50,18 +47,17 @@ public class LoginCadastro extends Tela_Base  {
 
         try {
             com.google.firebase.database.FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        } catch (Exception e) {
-            // Evita crash se a persistência já foi ativada antes
-        }
+        } catch (Exception e) {}
 
         iniciarComponentes();
         configurarLimpadoresDeErro();
 
         btnLogin.setOnClickListener(vw -> {
             if (validarCampos()) {
-                String email = editEmail.getText().toString().trim();
-                String senha = editSenha.getText().toString().trim();
-                fazerLogin(email, senha);
+                fazerLogin(
+                        editEmail.getText().toString().trim(),
+                        editSenha.getText().toString().trim()
+                );
             }
         });
 
@@ -71,7 +67,6 @@ public class LoginCadastro extends Tela_Base  {
     @Override
     protected void onStart() {
         super.onStart();
-        // Redireciona direto se já estiver logado
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             irParaMain();
@@ -123,6 +118,7 @@ public class LoginCadastro extends Tela_Base  {
                     }
                 });
     }
+
     private void recuperarSenha() {
         String email = editEmail.getText().toString().trim();
 
@@ -163,18 +159,15 @@ public class LoginCadastro extends Tela_Base  {
         txtEsqueciSenha = findViewById(R.id.txtEsqueciSenha);
     }
 
-    // Método que chama a tela principal após o login
     private void irParaMain() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         CurriculoDAO dao = new CurriculoDAO(this);
         Curriculo curriculo = dao.buscarPorEmail(email);
 
         Intent intent;
-        // Se o currículo for nulo, é o primeiro acesso -> AreaUsuario
         if (curriculo == null) {
             intent = new Intent(this, AreaUsuario.class);
         } else {
-            // Se já existe, vai direto para a tela principal
             intent = new Intent(this, Rumo.class);
         }
         startActivity(intent);

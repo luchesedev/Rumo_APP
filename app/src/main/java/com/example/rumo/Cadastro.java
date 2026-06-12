@@ -1,4 +1,4 @@
-package com.example.rumo; // Mantenha o package name do seu projeto
+package com.example.rumo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +10,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.rumo.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseNetworkException;
@@ -26,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-public class Cadastro  extends Tela_Base {
+public class Cadastro extends Tela_Base {
 
     private TextInputLayout layoutNome, layoutEmail, layoutSenha, layoutSenha2;
     private TextInputEditText editNome, editEmail, editSenha, editSenha2;
@@ -49,36 +46,34 @@ public class Cadastro  extends Tela_Base {
 
         btnCadastro.setOnClickListener(vw -> {
             if (validarCampos()) {
-                String nome  = editNome.getText().toString().trim();
-                String email = editEmail.getText().toString().trim();
-                String senha = editSenha.getText().toString().trim();
-                cadastrarUser(nome, email, senha);
+                cadastrarUser(
+                        editNome.getText().toString().trim(),
+                        editEmail.getText().toString().trim(),
+                        editSenha.getText().toString().trim()
+                );
             }
         });
     }
 
     private boolean validarCampos() {
-        String nome  = editNome.getText().toString().trim();
-        String email = editEmail.getText().toString().trim();
-        String senha = editSenha.getText().toString().trim();
-        String senha2= editSenha2.getText().toString().trim();
+        String nome   = editNome.getText().toString().trim();
+        String email  = editEmail.getText().toString().trim();
+        String senha  = editSenha.getText().toString().trim();
+        String senha2 = editSenha2.getText().toString().trim();
         boolean valido = true;
 
         if (nome.isEmpty() || nome.length() < 3) {
             layoutNome.setError("Informe um nome válido (mínimo 3 caracteres)");
             valido = false;
         }
-
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             layoutEmail.setError("Formato de e-mail inválido");
             valido = false;
         }
-
         if (senha.isEmpty() || senha.length() < 8) {
             layoutSenha.setError("A senha deve ter no mínimo 8 caracteres");
             valido = false;
         }
-
         if (senha2.isEmpty() || !senha.equals(senha2)) {
             layoutSenha2.setError("As senhas não coincidem");
             valido = false;
@@ -103,12 +98,10 @@ public class Cadastro  extends Tela_Base {
                                     .addOnCompleteListener(profileTask -> {
                                         setCarregando(false);
                                         Toast.makeText(this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show();
-
-                                        // AJUSTE AQUI:
-                                        // Em vez de voltar para o login, vamos direto para o preenchimento de dados
                                         Intent intent = new Intent(Cadastro.this, AreaUsuario.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
-                                        finish(); // Finaliza a tela de cadastro para não voltar nela
+                                        finish();
                                     });
                         }
                     } else {
@@ -150,12 +143,10 @@ public class Cadastro  extends Tela_Base {
         layoutEmail  = findViewById(R.id.layoutEmail);
         layoutSenha  = findViewById(R.id.layoutSenha);
         layoutSenha2 = findViewById(R.id.layoutSenha2);
-
         editNome     = findViewById(R.id.edtNomeCadastro);
         editEmail    = findViewById(R.id.edtEmailCadastro);
         editSenha    = findViewById(R.id.edtSenhaCadastro);
         editSenha2   = findViewById(R.id.edtSenha2Cadastro);
-
         btnCadastro  = findViewById(R.id.btn_cadastro);
         progressBar  = findViewById(R.id.progressBar);
     }
