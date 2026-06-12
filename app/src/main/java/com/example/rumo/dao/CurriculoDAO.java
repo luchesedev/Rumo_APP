@@ -55,10 +55,13 @@ public class CurriculoDAO {
     public Curriculo buscarPorEmail(String email) {
         if (email == null) return null;
 
+        // ADICIONADO: Filtro para garantir que busque apenas o perfil base do usuário
+        // (onde o texto do currículo da IA ainda está nulo ou vazio)
         Cursor cursor = banco.query("tbcurriculo",
                 new String[]{"id", "email", "dadosPessoais", "objetivo",
                         "experiencia", "habilidade", "formacao", "resumo", "curriculoGerado"},
-                "email = ?", new String[]{email},
+                "email = ? AND (curriculoGerado IS NULL OR curriculoGerado = '')",
+                new String[]{email},
                 null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {

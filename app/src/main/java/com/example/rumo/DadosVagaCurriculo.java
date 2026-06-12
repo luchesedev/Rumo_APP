@@ -285,15 +285,16 @@ public class DadosVagaCurriculo extends AppCompatActivity {
                             // Texto completo: fonte de verdade para edição e regeneração do PDF
                             curriculoParaSalvar.setCurriculoGerado(curriculoTexto);
 
-                            // ── 3. Salva ou atualiza no banco ───────────────────────
+                            // ── 3. Salva como um NOVO currículo no banco (Sem sobrescrever) ───────
                             CurriculoDAO dao = new CurriculoDAO(DadosVagaCurriculo.this);
-                            Curriculo curriculoSalvo = dao.salvarOuAtualizar(curriculoParaSalvar);
-                            Log.d("BANCO", "Currículo salvo com id=" + curriculoSalvo.getId());
+                            long novoId = dao.Insert(curriculoParaSalvar); // Usa o Insert direto para criar uma nova linha
+                            curriculoParaSalvar.setId((int) novoId);
+                            Log.d("BANCO", "Novo currículo gerado e salvo com id=" + novoId);
 
-                            // ── 4. Gera o PDF a partir do texto persistido ──────────
+// ── 4. Gera o PDF a partir do texto persistido ──────────
                             runOnUiThread(() ->
                                     salvarComoPdf(
-                                            curriculoSalvo.getCurriculoGerado(),
+                                            curriculoParaSalvar.getCurriculoGerado(),
                                             cargo,
                                             formatoEscolhido
                                     )
